@@ -13,7 +13,8 @@
 #include "binhash.hpp"
 
 /* Define this to use the bucketing version of the code */
-/* #define USE_BUCKETING */
+#define USE_BUCKETING
+#define HASH_MASK (HASH_DIM-1)
 
 /*@T
  * \subsection{Density computations}
@@ -59,8 +60,58 @@ void compute_density(sim_state_t* s, sim_param_t* params)
 
     // Accumulate density info
 #ifdef USE_BUCKETING
-    /* BEGIN TASK */
-    /* END TASK */
+        #pragma omp parallel for schedule(dynamic)
+        for (int i = 0; i < n; ++i) {
+            particle_t* pi = &p[i];
+            // Get neighboring particles
+            // Optional: Collect actual neighbors within h
+            // For simplicity, we iterate through neighboring cells
+            // and compute density contributions
+
+            // Determine the cell coordinates
+            int ix = floor(pi->x[0] / h);
+            int iy = floor(pi->x[1] / h);
+            int iz = floor(pi->x[2] / h);
+
+            // Iterate through neighboring cells
+            for (int dx = -1; dx <= 1; ++dx) {
+                for (int dy = -1; dy <= 1; ++dy) {
+                    for (int dz = -1; dz <= 1; ++dz) {
+                        int neighbor_ix = ix + dx;
+                        int neighbor_iy = iy + dy;
+                        int neighbor_iz = iz + dz;
+                        unsigned neighbor_hash = zm_encode(
+                            neighbor_ix & HASH_MASK,
+                            neighbor_iy & HASH_MASK,
+                            neighbor_iz & HASH_MASK
+                        );
+
+                        particle_t* pj = hash[neighbor_hash];
+                        while (pj != NULL) {
+                            // Compute distance squared
+                            float r2 = vec3_dist2(pi->x, pj->x);
+                            float z  = h2 - r2;
+                            if (z > 0) {
+                                float rho_ij = C * z * z * z;
+                                // To avoid race conditions, use atomic updates
+                                #pragma omp atomic
+                                pi->rho += rho_ij;
+                                
+                                // Ensure that each pair is only counted once
+                                if (pj != pi) {
+                                    #pragma omp atomic
+                                    pj->rho += rho_ij;
+                                }
+                            }
+                            pj = pj->next;
+                        }
+                    }
+                }
+            }
+
+            // Self-contribution
+            pi->rho += ( 315.0/64.0/M_PI ) * s->mass / h3;
+        }
 #else
     for (int i = 0; i < n; ++i) {
         particle_t* pi = s->part+i;
@@ -150,8 +201,38 @@ void compute_accel(sim_state_t* state, sim_param_t* params)
 
     // Accumulate forces
 #ifdef USE_BUCKETING
-    /* BEGIN TASK */
-    /* END TASK */
+        #pragma omp parallel for schedule(dynamic)
+        for (int i = 0; i < n; ++i) {
+            particle_t* pi = &p[i];
+            // Determine the cell coordinates
+            int ix = floor(pi->x[0] / h);
+            int iy = floor(pi->x[1] / h);
+            int iz = floor(pi->x[2] / h);
+
+            // Iterate through neighboring cells
+            for (int dx = -1; dx <= 1; ++dx) {
+                for (int dy = -1; dy <= 1; ++dy) {
+                    for (int dz = -1; dz <= 1; ++dz) {
+                        int neighbor_ix = ix + dx;
+                        int neighbor_iy = iy + dy;
+                        int neighbor_iz = iz + dz;
+                        unsigned neighbor_hash = zm_encode(
+                            neighbor_ix & HASH_MASK,
+                            neighbor_iy & HASH_MASK,
+                            neighbor_iz & HASH_MASK
+                        );
+
+                        particle_t* pj = hash[neighbor_hash];
+                        while (pj != NULL) {
+                            if (pj > pi) { // Ensure each pair is processed only once
+                                update_forces(pi, pj, h2, rho0, C0, Cp, Cv);
+                            }
+                            pj = pj->next;
+                        }
+                    }
+                }
+            }
+        }
 #else
     for (int i = 0; i < n; ++i) {
         particle_t* pi = p+i;
