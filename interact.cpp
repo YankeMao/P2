@@ -69,41 +69,51 @@ void compute_density(sim_state_t* s, sim_param_t* params)
             // and compute density contributions
 
             // Determine the cell coordinates
-            int ix = floor(pi->x[0] / h);
-            int iy = floor(pi->x[1] / h);
-            int iz = floor(pi->x[2] / h);
+            // int ix = floor(pi->x[0] / h);
+            // int iy = floor(pi->x[1] / h);
+            // int iz = floor(pi->x[2] / h);
+
+            float x = pi->x[0];
+            float y = pi->x[1];
+            float z = pi->x[2];
 
             // Iterate through neighboring cells
             for (int dx = -1; dx <= 1; ++dx) {
                 for (int dy = -1; dy <= 1; ++dy) {
                     for (int dz = -1; dz <= 1; ++dz) {
-                        int neighbor_ix = ix + dx;
-                        int neighbor_iy = iy + dy;
-                        int neighbor_iz = iz + dz;
-                        unsigned neighbor_hash = zm_encode(
-                            neighbor_ix & HASH_MASK,
-                            neighbor_iy & HASH_MASK,
-                            neighbor_iz & HASH_MASK
-                        );
+                        float nx = x + h * dx;
+                        float ny = y + h * dy;
+                        float nz = z + h * dz;
 
-                        particle_t* pj = hash[neighbor_hash];
-                        while (pj != NULL) {
-                            // Compute distance squared
-                            float r2 = vec3_dist2(pi->x, pj->x);
-                            float z  = h2 - r2;
-                            if (z > 0) {
-                                float rho_ij = C * z * z * z;
-                                // To avoid race conditions, use atomic updates
-                                #pragma omp atomic
-                                pi->rho += rho_ij;
-                                
-                                // Ensure that each pair is only counted once
-                                if (pj != pi) {
-                                    #pragma omp atomic
-                                    pj->rho += rho_ij;
+                        if(nx >= 0 and nx <= 1 and ny >= 0 and ny <= 1 and nz >= 0 and nz <= 1 ){
+                            int neighbor_ix = floor(nx / h);
+                            int neighbor_iy = floor(ny / h);
+                            int neighbor_iz = floor(nz / h);
+                            unsigned neighbor_hash = zm_encode(
+                                neighbor_ix & HASH_MASK,
+                                neighbor_iy & HASH_MASK,
+                                neighbor_iz & HASH_MASK
+                            );
+
+                            particle_t* pj = hash[neighbor_hash];
+                            while (pj != NULL) {
+                                // Compute distance squared
+                                if(pj > pi){
+                                    float r2 = vec3_dist2(pi->x, pj->x);
+                                    float z  = h2 - r2;
+                                    if (z > 0) {
+                                        float rho_ij = C * z * z * z;
+                                        // To avoid race conditions, use atomic updates
+                                        #pragma omp atomic
+                                        pi->rho += rho_ij;
+                                        
+                                        // Ensure that each pair is only counted once
+                                        #pragma omp atomic
+                                        pj->rho += rho_ij;
+                                    }
                                 }
+                                pj = pj->next;
                             }
-                            pj = pj->next;
                         }
                     }
                 }
@@ -205,31 +215,40 @@ void compute_accel(sim_state_t* state, sim_param_t* params)
         for (int i = 0; i < n; ++i) {
             particle_t* pi = &p[i];
             // Determine the cell coordinates
-            int ix = floor(pi->x[0] / h);
-            int iy = floor(pi->x[1] / h);
-            int iz = floor(pi->x[2] / h);
+            // int ix = floor(pi->x[0] / h);
+            // int iy = floor(pi->x[1] / h);
+            // int iz = floor(pi->x[2] / h);
+            float x = pi->x[0];
+            float y = pi->x[1];
+            float z = pi->x[2];
 
             // Iterate through neighboring cells
             for (int dx = -1; dx <= 1; ++dx) {
                 for (int dy = -1; dy <= 1; ++dy) {
                     for (int dz = -1; dz <= 1; ++dz) {
-                        int neighbor_ix = ix + dx;
-                        int neighbor_iy = iy + dy;
-                        int neighbor_iz = iz + dz;
-                        unsigned neighbor_hash = zm_encode(
-                            neighbor_ix & HASH_MASK,
-                            neighbor_iy & HASH_MASK,
-                            neighbor_iz & HASH_MASK
-                        );
+                        float nx = x + h * dx;
+                        float ny = y + h * dy;
+                        float nz = z + h * dz;
+                        
+                        if(nx >= 0 and nx <= 1 and ny >= 0 and ny <= 1 and nz >= 0 and nz <= 1 ){
+                            int neighbor_ix = floor(nx / h);
+                            int neighbor_iy = floor(ny / h);
+                            int neighbor_iz = floor(nz / h);
+                            unsigned neighbor_hash = zm_encode(
+                                neighbor_ix & HASH_MASK,
+                                neighbor_iy & HASH_MASK,
+                                neighbor_iz & HASH_MASK
+                            );
 
-                        particle_t* pj = hash[neighbor_hash];
-                        while (pj != NULL) {
-                            if (pj > pi) { // Ensure each pair is processed only once
-                                update_forces(pi, pj, h2, rho0, C0, Cp, Cv);
+                            particle_t* pj = hash[neighbor_hash];
+                            while (pj != NULL) {
+                                if (pj > pi) { // Ensure each pair is processed only once
+                                    update_forces(pi, pj, h2, rho0, C0, Cp, Cv);
+                                }
+                                pj = pj->next;
                             }
-                            pj = pj->next;
                         }
-                    }
+                    }   
                 }
             }
         }
