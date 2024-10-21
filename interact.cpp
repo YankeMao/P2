@@ -106,8 +106,6 @@ void compute_density(sim_state_t* s, sim_param_t* params)
                                         // To avoid race conditions, use atomic updates
                                         #pragma omp atomic
                                         pi->rho += rho_ij;
-                                        
-                                        // Ensure that each pair is only counted once
                                         #pragma omp atomic
                                         pj->rho += rho_ij;
                                     }
