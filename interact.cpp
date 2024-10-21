@@ -11,6 +11,7 @@
 #include "state.hpp"
 #include "interact.hpp"
 #include "binhash.hpp"
+#include <unordered_set>
 
 /* Define this to use the bucketing version of the code */
 #define USE_BUCKETING
@@ -52,7 +53,10 @@ void compute_density(sim_state_t* s, sim_param_t* params)
     float h3 = h2*h;
     float h9 = h3*h3*h3;
     float C  = ( 315.0/64.0/M_PI ) * s->mass / h9;
+
     unsigned bucket_list[27];
+    std::unordered_set<particle_t*> seen_particles;
+
 
     // Clear densities
     for (int i = 0; i < n; ++i)
@@ -60,11 +64,10 @@ void compute_density(sim_state_t* s, sim_param_t* params)
 
     // Accumulate density info
 #ifdef USE_BUCKETING
-    // printf("YEYEYEYEYEY\n");
-    // exit(1);
     /* BEGIN TASK */
     for(int i = 0; i < n; ++i) {
         particle_t* pi = s->part+i;
+        seen_particles.insert(pi);
         pi->rho += ( 315.0/64.0/M_PI ) * s->mass / h3;
         int n_buckets = particle_neighborhood(bucket_list, pi, params->h);
         
@@ -72,16 +75,14 @@ void compute_density(sim_state_t* s, sim_param_t* params)
         //     printf("N_buckets = %d\n", n_buckets);
         for(int j = 0; j < n_buckets; ++j){
             particle_t* pj = s->hash[bucket_list[j]];
-            while(pj) {
-                update_density(pi, pj, h2, C);
+            while(pj){
+                if(seen_particles.find(pj) == seen_particles.end()){
+                    update_density(pi, pj, h2, C);
+                }
                 pj = pj->next;
-                // printf("Hello\n");
+                // printf("%d, %d, %8x\n", i, j, pj);
             }
-            // printf("World\n");
-            // exit(1);
         }
-        // printf("Hello hjsakfjdsakfj!\n");
-        // exit(1);
     }
 
     /* END TASK */
@@ -158,6 +159,7 @@ void compute_accel(sim_state_t* state, sim_param_t* params)
     int n = state->n;
 
     unsigned bucket_list[27];
+    std::unordered_set<particle_t*> seen_particles;
 
     // Rehash the particles
     hash_particles(state, h);
@@ -180,11 +182,14 @@ void compute_accel(sim_state_t* state, sim_param_t* params)
     // exit(1);
     for(int i = 0; i < n; ++i) {
         particle_t* pi = p+i;
+        seen_particles.insert(pi);
         int n_buckets = particle_neighborhood(bucket_list, pi, params->h);
         for(int j = 0; j < n_buckets; ++j){
             particle_t* pj = hash[bucket_list[j]];
             while(pj) {
-                update_forces(pi, pj, h2, rho0, C0, Cp, Cv);
+                if(seen_particles.find(pj) == seen_particles.end()){
+                    update_forces(pi, pj, h2, rho0, C0, Cp, Cv);
+                }
                 pj = pj->next;
             }
         }
