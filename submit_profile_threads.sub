@@ -1,0 +1,29 @@
+#!/bin/bash
+#SBATCH -J sph
+#SBATCH -o sph_%j.out
+#SBATCH -e sph_%j.err
+#SBATCH -A m4776
+#SBATCH -C cpu
+#SBATCH -c ${N_CORES:-16}
+#SBATCH --qos=debug
+#SBATCH -t 01:00:00
+#SBATCH -N 1
+#SBATCH -n 1
+
+export SLURM_CPU_BIND="cores"
+export OMP_PROC_BIND=spread
+export OMP_PLACES=threads
+
+make exe
+module unload darshan
+
+N_THREADS=("2" "16" "32") 
+
+for N in "${N_THREADS[@]}"; do
+    export OMP_NUM_THREADS=$N #set threads
+    mkdir -p $OUTPUT_DIR/${N}_threads #make dir if necessary
+    srun pat_run ./sph.x > $OUTPUT_DIR/${N}_threads/perf_report.txt #run performance, save to appropriate directory
+done
+
+module load python
+python3 plot_profiling.py

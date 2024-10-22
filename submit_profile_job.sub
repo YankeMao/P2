@@ -1,0 +1,25 @@
+#!/bin/bash
+#SBATCH -J sph
+#SBATCH -o sph_%j.out
+#SBATCH -e sph_%j.err
+#SBATCH -A m4776
+#SBATCH -C cpu
+#SBATCH -c 16
+#SBATCH --qos=debug
+#SBATCH -t 01:00:00
+#SBATCH -N 1
+#SBATCH -n 1
+
+export SLURM_CPU_BIND="cores"
+export OMP_PROC_BIND=spread
+export OMP_PLACES=threads
+export OMP_NUM_THREADS=8
+make exe
+module unload darshan
+
+N_CORES=("1" "4" "16")
+for N in "${N_CORES[@]}"; do
+    export N_CORES=${N}
+    export OUTPUT_DIR="profiling/${N}_cores"
+    bash submit_profile_threads.sub
+done
