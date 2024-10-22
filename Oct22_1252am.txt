@@ -1,0 +1,664 @@
+CrayPat/X:  Version 23.12.0 Revision 67ffc52e7 sles15.4_x86_64  11/13/23 21:04:20
+
+Number of PEs (MPI ranks):   16
+                           
+Numbers of PEs per Node:     16
+                           
+Numbers of Threads per PE:    8
+                           
+Number of Cores per Socket:  64
+
+Execution start time:  Mon Oct 21 19:31:52 2024
+
+System name and speed:  nid004183  2.454 GHz (nominal)
+
+AMD   Milan                CPU  Family: 25  Model:  1  Stepping:  1
+
+Core Performance Boost:  128 PEs have CPB capability
+
+Current path to data file:  /global/homes/o/ojl23/P2/000000.ap2   (RTS)
+
+
+Notes for table 1:
+
+  This table shows functions that have significant exclusive sample
+    hits, averaged across ranks.
+  For further explanation, see the "General table notes" below, or 
+    use:  pat_report -v -O samp_profile ...
+
+Table 1:  Sample Profile by Function
+
+  Samp% |     Samp |  Imb. |  Imb. | Group
+        |          |  Samp | Samp% |  Function
+        |          |       |       |   PE=HIDE
+        |          |       |       |    Thread=HIDE
+       
+ 100.0% | 12,792.2 |    -- |    -- | Total
+|---------------------------------------------------
+|  95.1% | 12,163.9 |    -- |    -- | USER
+||--------------------------------------------------
+||  20.1% |  2,572.8 |  80.2 |  3.2% | compute_density
+||  16.7% |  2,135.1 | 164.9 |  7.6% | compute_accel
+||  12.4% |  1,586.7 |  60.3 |  3.9% | zm_part1by2
+||   9.9% |  1,261.6 | 110.4 |  8.6% | vec3_len2
+||   6.7% |    858.7 | 130.3 | 14.1% | vec3_dist2
+||   6.6% |    846.1 | 206.9 | 21.0% | vec3_diff
+||   6.4% |    819.9 |  42.1 |  5.2% | update_forces
+||   6.1% |    776.6 |  35.4 |  4.7% | std::floor
+||   4.8% |    608.2 |  78.8 | 12.2% | vec3_saxpy
+||   1.1% |    142.6 |  25.4 | 16.1% | vec3_set
+||   1.0% |    127.2 |  19.8 | 14.4% | zm_encode
+||==================================================
+|   3.2% |    405.9 |    -- |    -- | STDIO
+||--------------------------------------------------
+||   3.2% |    404.8 |  17.2 |  4.3% | fprintf
+||==================================================
+|   1.0% |    124.3 |    -- |    -- | OMP
+|===================================================
+
+Notes for table 2:
+
+  This table shows functions that have the most significant exclusive
+    time, taking the maximum time across ranks and threads.
+  For further explanation, see the "General table notes" below, or 
+    use:  pat_report -v -O profile_max ...
+
+Table 2:  Profile of maximum function times
+
+  Samp% |    Samp |  Imb. |  Imb. | Function
+        |         |  Samp | Samp% |  PE=[max,min]
+        |         |       |       |   Thread=HIDE
+|-----------------------------------------------------
+| 100.0% | 2,705.0 |  87.5 |  3.5% | compute_density
+||----------------------------------------------------
+|| 100.0% | 2,705.0 | 104.8 |  4.4% | pe.9
+||  94.0% | 2,544.0 |  43.8 |  2.0% | pe.10
+||====================================================
+|  85.0% | 2,300.0 | 119.1 |  5.5% | compute_accel
+||----------------------------------------------------
+||  85.0% | 2,300.0 | 143.0 |  7.1% | pe.12
+||  77.1% | 2,085.0 |  21.0 |  1.2% | pe.11
+||====================================================
+|  69.1% | 1,869.0 | 113.1 |  6.5% | clone
+||----------------------------------------------------
+||  69.1% | 1,869.0 |  35.1 |  2.2% | pe.5
+||  62.8% | 1,699.0 |  24.6 |  1.7% | pe.3
+||====================================================
+|  60.9% | 1,647.0 |  60.3 |  3.9% | zm_part1by2
+||----------------------------------------------------
+||  60.9% | 1,647.0 | 269.6 | 18.7% | pe.1
+||  57.4% | 1,553.0 | 200.2 | 14.7% | pe.3
+||====================================================
+|  50.7% | 1,372.0 |  52.4 |  4.1% | vec3_len2
+||----------------------------------------------------
+||  50.7% | 1,372.0 |  82.1 |  6.8% | pe.14
+||  47.1% | 1,274.0 |  29.8 |  2.7% | pe.12
+||====================================================
+|  42.3% | 1,144.0 | 240.4 | 22.4% | vec3_diff
+||----------------------------------------------------
+||  42.3% | 1,144.0 |  65.6 |  6.6% | pe.12
+||  30.9% |   835.0 |  30.9 |  4.2% | pe.4
+||====================================================
+|  38.3% | 1,037.0 | 135.9 | 14.0% | vec3_dist2
+||----------------------------------------------------
+||  38.3% | 1,037.0 |  77.2 |  8.5% | pe.10
+||  30.8% |   833.0 |  16.1 |  2.2% | pe.12
+||====================================================
+|  32.8% |   886.0 |  37.2 |  4.5% | update_forces
+||----------------------------------------------------
+||  32.8% |   886.0 |  49.8 |  6.4% | pe.14
+||  29.9% |   810.0 |  29.5 |  4.2% | pe.6
+||====================================================
+|  31.6% |   854.0 |  32.7 |  4.1% | std::floor
+||----------------------------------------------------
+||  31.6% |   854.0 |  52.6 |  7.0% | pe.0
+||  29.2% |   791.0 |  28.0 |  4.0% | pe.8
+||====================================================
+|  25.4% |   687.0 |  78.8 | 12.2% | vec3_saxpy
+||----------------------------------------------------
+||  25.4% |   687.0 | 300.5 | 50.0% | pe.2
+||  18.0% |   486.0 | 163.2 | 38.4% | pe.5
+||====================================================
+|  15.6% |   422.0 |  17.2 |  4.3% | fprintf
+||----------------------------------------------------
+||  15.6% |   422.0 |    -- |    -- | pe.9
+||  14.2% |   385.0 |    -- |    -- | pe.14
+||====================================================
+|  11.8% |   320.0 | 267.1 | 89.0% | leapfrog_step
+||----------------------------------------------------
+||  11.8% |   320.0 |    -- |    -- | pe.5
+||   0.8% |    22.0 |    -- |    -- | pe.10
+||====================================================
+|   6.2% |   168.0 |  25.4 | 16.1% | vec3_set
+||----------------------------------------------------
+||   6.2% |   168.0 |    -- |    -- | pe.13
+||   3.3% |    88.0 |    -- |    -- | pe.12
+||====================================================
+|   5.4% |   147.0 |  14.1 | 10.2% | zm_encode
+||----------------------------------------------------
+||   5.4% |   147.0 |  26.6 | 20.7% | pe.8
+||   4.6% |   125.0 |  11.6 | 10.6% | pe.13
+||====================================================
+|   5.4% |   147.0 |  18.2 | 13.2% | omp_get_device_num
+||----------------------------------------------------
+||   5.4% |   147.0 |  35.1 | 27.3% | pe.11
+||   4.3% |   115.0 |   8.6 |  8.6% | pe.2
+||====================================================
+|   3.8% |   103.0 |  18.9 | 19.5% | reflect_bc
+||----------------------------------------------------
+||   3.8% |   103.0 |    -- |    -- | pe.2
+||   2.4% |    65.0 |    -- |    -- | pe.12
+||====================================================
+|   3.5% |    96.0 |  13.2 | 14.7% | hash_particles
+||----------------------------------------------------
+||   3.5% |    96.0 |    -- |    -- | pe.5
+||   2.4% |    65.0 |    -- |    -- | pe.9
+||====================================================
+|   3.3% |    90.0 |  15.9 | 18.9% | particle_bucket
+||----------------------------------------------------
+||   3.3% |    90.0 |    -- |    -- | pe.4
+||   2.1% |    58.0 |    -- |    -- | pe.11
+||====================================================
+|   2.7% |    73.0 |  13.9 | 20.3% | check_state
+||----------------------------------------------------
+||   2.7% |    73.0 |    -- |    -- | pe.10
+||   1.8% |    50.0 |    -- |    -- | pe.14
+||====================================================
+|   1.6% |    42.0 |  14.9 | 37.8% | vec3_copy
+||----------------------------------------------------
+||   1.6% |    42.0 |    -- |    -- | pe.13
+||   0.7% |    19.0 |    -- |    -- | pe.9
+||====================================================
+|   1.4% |    38.0 |   5.6 | 15.6% | std::sqrt
+||----------------------------------------------------
+||   1.4% |    38.0 |   9.2 | 27.8% | pe.0
+||   0.9% |    24.0 |   4.8 | 22.6% | pe.12
+||====================================================
+|   1.3% |    35.0 |   7.0 | 21.3% | __sqrtf_finite
+||----------------------------------------------------
+||   1.3% |    35.0 |  13.0 | 42.4% | pe.10
+||   0.9% |    23.0 |   2.9 | 14.3% | pe.0
+||====================================================
+|   1.1% |    30.0 |   7.1 | 25.3% | sqrtf
+||----------------------------------------------------
+||   1.1% |    30.0 |  10.1 | 38.6% | pe.6
+||   0.7% |    20.0 |   4.5 | 25.7% | pe.12
+||====================================================
+|   1.0% |    27.0 |   8.1 | 32.1% | damp_reflect
+||----------------------------------------------------
+||   1.0% |    27.0 |    -- |    -- | pe.11
+||   0.4% |    11.0 |    -- |    -- | pe.9
+|=====================================================
+
+Notes for table 3:
+
+  This table shows functions that have the most significant exclusive
+    time, taking for each thread the average time across ranks.
+    The imbalance percentage is relative to the team observed to
+    participate in execution.
+    Use -s th=ALL to see individual thread values.
+  For further explanation, see the "General table notes" below, or 
+    use:  pat_report -v -O profile_th_pe ...
+
+Table 3:  Profile by Function Group and Function with Ranks under Threads
+
+  Samp% |     Samp |  Imb. |  Imb. | Team | Group
+        |          |  Samp | Samp% | Size |  Function
+        |          |       |       |      |   Thread=HIDE
+        |          |       |       |      |    PE=HIDE
+       
+ 100.0% | 12,792.2 |    -- |    -- |   -- | Total
+|----------------------------------------------------------
+|  95.1% | 12,163.9 |    -- |    -- |   -- | USER
+||---------------------------------------------------------
+||  20.1% |  2,572.8 |  30.3 |  1.3% |    8 | compute_density
+||  16.7% |  2,135.1 |  27.0 |  1.4% |    8 | compute_accel
+||  12.4% |  1,586.7 | 222.0 | 16.0% |    8 | zm_part1by2
+||   9.9% |  1,261.6 |  15.1 |  1.3% |    8 | vec3_len2
+||   6.7% |    858.7 |  11.7 |  1.5% |    8 | vec3_dist2
+||   6.6% |    846.1 |  13.0 |  1.7% |    8 | vec3_diff
+||   6.4% |    819.9 |  11.0 |  1.5% |    8 | update_forces
+||   6.1% |    776.6 |  11.8 |  1.7% |    8 | std::floor
+||   4.8% |    608.2 | 259.7 | 48.8% |    8 | vec3_saxpy
+||   1.1% |    142.6 |    -- |    -- |    1 | vec3_set
+||   1.0% |    127.2 |  16.1 | 14.5% |    8 | zm_encode
+||=========================================================
+|   3.2% |    405.9 |    -- |    -- |   -- | STDIO
+||---------------------------------------------------------
+||   3.2% |    404.8 |    -- |    -- |    1 | fprintf
+||=========================================================
+|   1.0% |    124.3 |    -- |    -- |   -- | OMP
+|==========================================================
+
+Notes for table 4:
+
+  This table shows functions, and line numbers within functions, that
+    have significant exclusive sample hits, averaged across ranks.
+  For further explanation, see the "General table notes" below, or 
+    use:  pat_report -v -O samp_profile+src ...
+
+Table 4:  Sample Profile by Group, Function, and Line
+
+  Samp% |     Samp |  Imb. |  Imb. | Group
+        |          |  Samp | Samp% |  Function
+        |          |       |       |   Source
+        |          |       |       |    Line
+        |          |       |       |     PE=HIDE
+        |          |       |       |      Thread=HIDE
+       
+ 100.0% | 12,792.2 |    -- |    -- | Total
+|-----------------------------------------------------------
+|  95.1% | 12,163.9 |    -- |    -- | USER
+||----------------------------------------------------------
+||  20.1% |  2,572.8 |    -- |    -- | compute_density
+3|        |          |       |       |  o/ojl23/P2/interact.cpp
+||||--------------------------------------------------------
+4|||   1.4% |    173.1 |  14.9 |  8.4% | line.83
+4|||   1.4% |    173.7 |  28.3 | 15.0% | line.88
+4|||   1.3% |    171.1 |  18.9 | 10.6% | line.98
+4|||   1.8% |    232.5 |  20.5 |  8.6% | line.99
+4|||   1.4% |    184.1 |  28.9 | 14.5% | line.103
+4|||   1.8% |    227.1 |  40.9 | 16.3% | line.104
+4|||   1.0% |    132.0 |  28.0 | 18.7% | line.107
+4|||   1.3% |    170.4 |  21.6 | 12.0% | line.109
+4|||   3.0% |    386.1 |  36.9 |  9.3% | line.113
+||||========================================================
+||  16.7% |  2,135.1 |    -- |    -- | compute_accel
+3|        |          |       |       |  o/ojl23/P2/interact.cpp
+||||--------------------------------------------------------
+4|||   1.9% |    245.1 |  25.9 | 10.2% | line.226
+4|||   1.6% |    201.7 |  28.3 | 13.1% | line.231
+4|||   1.5% |    197.8 |  26.2 | 12.5% | line.241
+4|||   2.3% |    292.8 |  24.2 |  8.2% | line.242
+4|||   3.6% |    459.6 |  56.4 | 11.7% | line.246
+||||========================================================
+||  12.4% |  1,586.7 |    -- |    -- | zm_part1by2
+3|        |          |       |       |  o/ojl23/P2/zmorton.hpp
+||||--------------------------------------------------------
+4|||   2.6% |    326.5 |  29.5 |  8.8% | line.30
+4|||   2.3% |    299.6 |  44.4 | 13.8% | line.31
+4|||   2.9% |    364.9 |  20.1 |  5.6% | line.32
+4|||   4.3% |    551.6 |  27.4 |  5.1% | line.33
+||||========================================================
+||   9.9% |  1,261.6 |    -- |    -- | vec3_len2
+3|        |          |       |       |  o/ojl23/P2/vec3.hpp
+4|   9.4% |  1,198.6 | 110.4 |  9.0% |   line.48
+||   6.7% |    858.7 |    -- |    -- | vec3_dist2
+3|        |          |       |       |  o/ojl23/P2/vec3.hpp
+||||--------------------------------------------------------
+4|||   4.3% |    545.9 | 119.1 | 19.1% | line.40
+4|||   1.5% |    187.2 |  18.8 |  9.7% | line.43
+||||========================================================
+||   6.6% |    846.1 |    -- |    -- | vec3_diff
+3|        |          |       |       |  o/ojl23/P2/vec3.hpp
+4|   5.1% |    647.6 | 197.4 | 24.9% |   line.26
+||   6.4% |    819.9 |    -- |    -- | update_forces
+3|        |          |       |       |  o/ojl23/P2/interact.cpp
+4|   2.3% |    295.7 |  23.3 |  7.8% |   line.158
+||   6.1% |    776.6 |  35.4 |  4.7% | std::floor
+3|        |          |       |       |  include/c++/12/cmath
+4|        |          |       |       |   line.261
+||   4.8% |    608.2 |    -- |    -- | vec3_saxpy
+3|        |          |       |       |  o/ojl23/P2/vec3.hpp
+||||--------------------------------------------------------
+4|||   1.6% |    205.2 |  86.8 | 31.7% | line.53
+4|||   1.5% |    190.2 |  30.8 | 14.9% | line.54
+4|||   1.2% |    155.3 |  76.7 | 35.3% | line.55
+||||========================================================
+||   1.1% |    142.6 |    -- |    -- | vec3_set
+3|        |          |       |       |  o/ojl23/P2/vec3.hpp
+||   1.0% |    127.2 |    -- |    -- | zm_encode
+3|        |          |       |       |  o/ojl23/P2/zmorton.hpp
+||==========================================================
+|   3.2% |    405.9 |    -- |    -- | STDIO
+||----------------------------------------------------------
+||   3.2% |    404.8 |  17.2 |  4.3% | fprintf
+||==========================================================
+|   1.0% |    124.3 |    -- |    -- | OMP
+|===========================================================
+
+Notes for table 5:
+
+  This table shows HW performance counter data for the whole program,
+    averaged across ranks or threads, as applicable.
+  For further explanation, see the "General table notes" below, or 
+    use:  pat_report -v -O hwpc ...
+
+Table 5:  Program HW Performance Counter Data
+
+PE=HIDE / Thread=HIDE
+
+  
+==============================================================================
+  Total
+------------------------------------------------------------------------------
+  Thread Time                                                    128.865013 secs
+  REQUESTS_TO_L2_GROUP1:L2_HW_PF                              3,466,256,688 
+  REQUESTS_TO_L2_GROUP1:RD_BLK_X                                 79,853,954 
+  CORE_TO_L2_CACHEABLE_REQUEST_ACCESS_STATUS:LS_RD_BLK_C        996,794,930 
+  L2_PREFETCH_HIT_L2:L2_HW_PREFETCHER:L1_HW_PREFETCHER        4,346,964,241 
+  L2_PREFETCH_HIT_L3:L2_HW_PREFETCHER:L1_HW_PREFETCHER          631,486,192 
+==============================================================================
+
+Notes for table 6:
+
+  This table show the average time and number of bytes written to each
+    output file, taking the average over the number of ranks that
+    wrote to the file.  It also shows the number of write operations,
+    and average rates.
+  For further explanation, see the "General table notes" below, or 
+    use:  pat_report -v -O write_stats ...
+
+Table 6:  File Output Stats by Filename
+
+      Avg | Avg Write |  Write Rate | Number |  Avg Writes | Bytes/ | File Name=!x/^/(proc|sys)/
+    Write |   MiBytes | MiBytes/sec |     of |  per Writer |   Call |  PE=HIDE
+ Time per |       per |             | Writer |        Rank |        | 
+   Writer |    Writer |             |  Ranks |             |        | 
+     Rank |      Rank |             |        |             |        | 
+|-----------------------------------------------------------------------------
+| 3.798424 | 50.285771 |   13.238590 |     16 | 1,352,001.0 |  39.00 | run.out
+| 0.001202 |  0.009775 |    8.128933 |     16 |       400.0 |  25.62 | stdout
+|=============================================================================
+
+Notes for table 7:
+
+  This table shows energy and power usage for the nodes with the
+    maximum, mean, and minimum usage, as well as the sum of usage over
+    all nodes.
+    Energy and power for accelerators is also shown, if available.
+  For further explanation, see the "General table notes" below, or 
+    use:  pat_report -v -O program_energy ...
+
+Table 7:  Program Energy and Power Usage from Cray PM
+
+PE=HIDE / Thread=HIDE
+
+  
+============================================================
+  Total
+------------------------------------------------------------
+  PM Energy Node    634 W     81,749 J
+  PM Energy Cpu     386 W     49,767 J
+  PM Energy Memory  150 W     19,375 J
+  Process Time            128.873164 secs
+============================================================
+
+Notes for table 8:
+
+  This table shows values shown for HiMem calculated from information
+    in the /proc/self/numa_maps files captured near the end of the
+    program. It is the total size of all pages, including huge pages,
+    that were actually mapped into physical memory from both private
+    and shared memory segments.
+  For further explanation, see the "General table notes" below, or 
+    use:  pat_report -v -O himem ...
+
+Table 8:  Memory High Water Mark by Numa Node
+
+Numanode / PE=HIDE
+
+  
+=============================================================================
+  numanode.0
+-----------------------------------------------------------------------------
+  Process HiMem (MiBytes)          105.6 
+  HiMem Numa Node 0 (MiBytes)       91.7 MiBytes
+  HiMem Numa Node 1 (MiBytes)        6.1 MiBytes
+  HiMem Numa Node 2 (MiBytes)        3.6 MiBytes
+  HiMem Numa Node 3 (MiBytes)        1.4 MiBytes
+  HiMem Numa Node 4 (MiBytes)        0.6 MiBytes
+  HiMem Numa Node 5 (MiBytes)        0.8 MiBytes
+  HiMem Numa Node 6 (MiBytes)        0.9 MiBytes
+  HiMem Numa Node 7 (MiBytes)        0.5 MiBytes
+=============================================================================
+  numanode.1
+-----------------------------------------------------------------------------
+  Process HiMem (MiBytes)          105.2 
+  HiMem Numa Node 0 (MiBytes)        3.8 MiBytes
+  HiMem Numa Node 1 (MiBytes)       93.6 MiBytes
+  HiMem Numa Node 2 (MiBytes)        3.5 MiBytes
+  HiMem Numa Node 3 (MiBytes)        1.5 MiBytes
+  HiMem Numa Node 4 (MiBytes)        0.5 MiBytes
+  HiMem Numa Node 5 (MiBytes)        0.9 MiBytes
+  HiMem Numa Node 6 (MiBytes)        0.8 MiBytes
+  HiMem Numa Node 7 (MiBytes)        0.5 MiBytes
+=============================================================================
+  numanode.2
+-----------------------------------------------------------------------------
+  Process HiMem (MiBytes)          107.0 
+  HiMem Numa Node 0 (MiBytes)        3.8 MiBytes
+  HiMem Numa Node 1 (MiBytes)        6.0 MiBytes
+  HiMem Numa Node 2 (MiBytes)       93.1 MiBytes
+  HiMem Numa Node 3 (MiBytes)        1.5 MiBytes
+  HiMem Numa Node 4 (MiBytes)        0.5 MiBytes
+  HiMem Numa Node 5 (MiBytes)        0.8 MiBytes
+  HiMem Numa Node 6 (MiBytes)        0.9 MiBytes
+  HiMem Numa Node 7 (MiBytes)        0.5 MiBytes
+=============================================================================
+  numanode.3
+-----------------------------------------------------------------------------
+  Process HiMem (MiBytes)          105.1 
+  HiMem Numa Node 0 (MiBytes)        3.7 MiBytes
+  HiMem Numa Node 1 (MiBytes)        6.1 MiBytes
+  HiMem Numa Node 2 (MiBytes)        3.6 MiBytes
+  HiMem Numa Node 3 (MiBytes)       89.0 MiBytes
+  HiMem Numa Node 4 (MiBytes)        0.5 MiBytes
+  HiMem Numa Node 5 (MiBytes)        0.8 MiBytes
+  HiMem Numa Node 6 (MiBytes)        0.8 MiBytes
+  HiMem Numa Node 7 (MiBytes)        0.6 MiBytes
+=============================================================================
+  numanode.4
+-----------------------------------------------------------------------------
+  Process HiMem (MiBytes)          105.1 
+  HiMem Numa Node 0 (MiBytes)        3.8 MiBytes
+  HiMem Numa Node 1 (MiBytes)        6.0 MiBytes
+  HiMem Numa Node 2 (MiBytes)        3.5 MiBytes
+  HiMem Numa Node 3 (MiBytes)        1.4 MiBytes
+  HiMem Numa Node 4 (MiBytes)       88.1 MiBytes
+  HiMem Numa Node 5 (MiBytes)        0.9 MiBytes
+  HiMem Numa Node 6 (MiBytes)        0.9 MiBytes
+  HiMem Numa Node 7 (MiBytes)        0.5 MiBytes
+=============================================================================
+  numanode.5
+-----------------------------------------------------------------------------
+  Process HiMem (MiBytes)          106.1 
+  HiMem Numa Node 0 (MiBytes)        3.7 MiBytes
+  HiMem Numa Node 1 (MiBytes)        6.1 MiBytes
+  HiMem Numa Node 2 (MiBytes)        3.5 MiBytes
+  HiMem Numa Node 3 (MiBytes)        1.4 MiBytes
+  HiMem Numa Node 4 (MiBytes)        0.6 MiBytes
+  HiMem Numa Node 5 (MiBytes)       89.4 MiBytes
+  HiMem Numa Node 6 (MiBytes)        0.8 MiBytes
+  HiMem Numa Node 7 (MiBytes)        0.6 MiBytes
+=============================================================================
+  numanode.6
+-----------------------------------------------------------------------------
+  Process HiMem (MiBytes)          104.1 
+  HiMem Numa Node 0 (MiBytes)        3.7 MiBytes
+  HiMem Numa Node 1 (MiBytes)        6.0 MiBytes
+  HiMem Numa Node 2 (MiBytes)        3.6 MiBytes
+  HiMem Numa Node 3 (MiBytes)        1.4 MiBytes
+  HiMem Numa Node 4 (MiBytes)        0.6 MiBytes
+  HiMem Numa Node 5 (MiBytes)        0.8 MiBytes
+  HiMem Numa Node 6 (MiBytes)       87.4 MiBytes
+  HiMem Numa Node 7 (MiBytes)        0.6 MiBytes
+=============================================================================
+  numanode.7
+-----------------------------------------------------------------------------
+  Process HiMem (MiBytes)          104.2 
+  HiMem Numa Node 0 (MiBytes)        3.7 MiBytes
+  HiMem Numa Node 1 (MiBytes)        6.0 MiBytes
+  HiMem Numa Node 2 (MiBytes)        3.5 MiBytes
+  HiMem Numa Node 3 (MiBytes)        1.5 MiBytes
+  HiMem Numa Node 4 (MiBytes)        0.5 MiBytes
+  HiMem Numa Node 5 (MiBytes)        0.9 MiBytes
+  HiMem Numa Node 6 (MiBytes)        0.9 MiBytes
+  HiMem Numa Node 7 (MiBytes)       87.2 MiBytes
+=============================================================================
+
+Notes for table 9:
+
+  This table shows memory traffic for numa nodes, taking for each numa
+    node the maximum value across nodes. It also shows the balance in
+    memory traffic by showing the top 3 and bottom 3 node values.
+  For further explanation, see the "General table notes" below, or 
+    use:  pat_report -v -O mem_bw ...
+
+Table 9:  Memory Bandwidth by Numanode
+
+     Thread | Numanode
+       Time |  PE=HIDE
+            |   Thread=HIDE
+|--------------------------
+| 128.849905 | numanode.0
+| 131.208113 | numanode.1
+| 128.492273 | numanode.2
+| 130.906981 | numanode.3
+| 128.914260 | numanode.4
+| 131.148122 | numanode.5
+| 130.972989 | numanode.6
+| 128.894858 | numanode.7
+|==========================
+
+Notes for table 10:
+
+  This table shows total wall clock time for the ranks with the
+    maximum, mean, and minimum time, as well as the average across
+    ranks.
+    It also shows maximum memory usage from /proc/self/numa_maps for
+    those ranks, and on average.  The usage is total size of all
+    pages, including huge pages, that were actually mapped into
+    physical memory from both private and shared memory segments.
+  For further explanation, see the "General table notes" below, or 
+    use:  pat_report -v -O program_time ...
+
+Table 10:  Wall Clock Time, Memory High Water Mark
+
+    Process |   Process | PE=[mmm]
+       Time |     HiMem |  Thread
+            | (MiBytes) | 
+           
+ 128.873164 |     105.3 | Total
+|---------------------------------
+| 131.241935 |     106.1 | pe.7
+|            |           |  thread.0
+| 128.741036 |     104.2 | pe.13
+|            |           |  thread.0
+| 128.030684 |     106.0 | pe.10
+|            |           |  thread.0
+|=================================
+
+========================  Additional details  ========================
+
+General table notes:
+
+    The default notes for a table are based on the default definition of
+    the table, and do not account for the effects of command-line options
+    that may modify the content of the table.
+    
+    Detailed notes, produced by the pat_report -v option, do account for
+    all command-line options, and also show how data is aggregated, and
+    if the table content is limited by thresholds, rank selections, etc.
+    
+    An imbalance metric in a line is based on values in main threads
+    across multiple ranks, or on values across all threads, as applicable.
+    
+    An imbalance percent in a line is relative to the maximum value
+    for that line across ranks or threads, as applicable.
+    
+    If the number of Calls for a function is shown as "--", then that
+    function was not traced and the other values in its line summarize
+    the data collected for functions that it calls and that were traced.
+    
+Experiment:  samp_cs_time
+
+Sampling interval:  10000 microsecs
+
+Original path to data file:
+  /global/u2/o/ojl23/P2/sph.x+1050658-1151976446s/xf-files   (RTS, 16 data files)
+
+Original program:  ./sph.x
+
+Instrumented with:  pat_run ./sph.x
+
+Program invocation:  ./sph.x
+
+Exit Status:  0 for 16 PEs
+
+Thread start functions and creator functions:
+    16 threads:  ==LO_MEMORY== sph.x
+   112 threads:  omp_fulfill_event <- omp_fulfill_event
+
+Memory pagesize:  4 KiB
+
+Memory hugepagesize:  Not Available
+
+Programming environment:  GNU
+
+Runtime environment variables:
+  CRAYPAT_LD_LIBRARY_PATH=/opt/cray/pe/perftools/23.12.0/lib64
+  CRAYPAT_OPTS_EXECUTABLE=libexec64/opts
+  CRAYPAT_ROOT=/opt/cray/pe/perftools/23.12.0
+  CRAYPE_VERSION=2.7.30
+  CRAY_CUDATOOLKIT_VERSION=23.9_12.2
+  CRAY_DSMML_VERSION=0.2.2
+  CRAY_MPICH_VERSION=8.1.28
+  CRAY_PERFTOOLS_VERSION=23.12.0
+  CRAY_PE_LIBSCI_VERSION=23.12.5
+  GCC_VERSION=12.3
+  GNU_VERSION=12.3
+  HUGETLB_VERBOSE=0
+  LMOD_FAMILY_COMPILER_VERSION=12.3
+  LMOD_FAMILY_CRAYPE_ACCEL_VERSION=false
+  LMOD_FAMILY_CRAYPE_CPU_VERSION=false
+  LMOD_FAMILY_CRAYPE_NETWORK_VERSION=false
+  LMOD_FAMILY_CRAYPE_VERSION=2.7.30
+  LMOD_FAMILY_CUDATOOLKIT_VERSION=12.2
+  LMOD_FAMILY_GCC_COMPILER_VERSION=12.3
+  LMOD_FAMILY_HARDWARE_VERSION=1.0
+  LMOD_FAMILY_LIBSCI_VERSION=23.12.5
+  LMOD_FAMILY_MPI_VERSION=8.1.28
+  LMOD_FAMILY_PRGENV_VERSION=8.5.0
+  LMOD_VERSION=8.7.31
+  MPICH_DIR=/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3
+  MPICH_GPU_SUPPORT_ENABLED=0
+  MPICH_MPIIO_DVS_MAXNODES=24
+  MPICH_OFI_CXI_COUNTER_REPORT=0
+  OMP_NUM_THREADS=8
+  OMP_PLACES=threads
+  OMP_PROC_BIND=spread
+  PAT_RT_EXPERIMENT=samp_cs_time
+  PAT_RT_PERFCTR=default_samp,
+  PAT_RT_PERFCTR_DISABLE_COMPONENTS=nvml,rocm_smi
+  PAT_RT_SAMPLING_MODE=3
+  PERFTOOLS_VERSION=23.12.0
+  PMI_CONTROL_PORT=63743
+  PMI_JOBID=32042465
+  PMI_LOCAL_RANK=0
+  PMI_LOCAL_SIZE=16
+  PMI_RANK=0
+  PMI_SHARED_SECRET=1533765293177742043
+  PMI_SIZE=16
+  PMI_UNIVERSE_SIZE=16
+  TERM_PROGRAM_VERSION=1.94.2
+
+Report time environment variables:
+    CRAYPAT_ROOT=/opt/cray/pe/perftools/23.12.0
+
+Number of MPI control variables collected:  136
+
+  (To see the list, specify: -s mpi_cvar=show)
+
+Report command line options:  <none>
+
+Operating system:
+  Linux 5.14.21-150400.24.111_12.0.91-cray_shasta_c #1 SMP Mon Aug 5 07:02:07 UTC 2024 (0c4e917)
+
+Hardware performance counter events:
+   REQUESTS_TO_L2_GROUP1:L2_HW_PF                          All L2 cache requests:Number of prefetches accepted by L2 pipeline, hit or miss
+   REQUESTS_TO_L2_GROUP1:RD_BLK_X                          All L2 cache requests:Number of data cache stores
+   CORE_TO_L2_CACHEABLE_REQUEST_ACCESS_STATUS:LS_RD_BLK_C  L2 cache request outcomes. This event does not count accesses to the L2 cache by the L2 prefetcher:Number of data cache requests missing in the L2 (all types)
+   L2_PREFETCH_HIT_L2:L2_HW_PREFETCHER:L1_HW_PREFETCHER    Number of L2 prefetches that hit in the L2:Number of requests generated by L2 hardware prefetcher:Number of requests generated by L1 hardware prefetcher
+   L2_PREFETCH_HIT_L3:L2_HW_PREFETCHER:L1_HW_PREFETCHER    Number of L2 prefetches accepted by the L2 pipeline which miss theL2 cache and hit the L3:Number of requests generated by L2 hardware prefetcher:Number of requests generated by L1 hardware prefetcher
+
