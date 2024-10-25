@@ -80,22 +80,17 @@ void hash_particles(sim_state_t* s, float h)
     particle_t** hash = s->hash;
 
     // Clear the hash table
-    #pragma omp parallel for
     for (int i = 0; i < HASH_SIZE; ++i) {
         hash[i] = NULL;
     }
 
     // Assign particles to hash buckets
-    #pragma omp parallel for
     for (int i = 0; i < n; ++i) {
         unsigned bucket = particle_bucket(&p[i], h);
 
         // Insert particle into the bucket's linked list
         // Use atomic operations to prevent race conditions
-        #pragma omp critical
-        {
-            p[i].next = hash[bucket];
-            hash[bucket] = &p[i];
-        }
+        p[i].next = hash[bucket];
+        hash[bucket] = &p[i];
     }
 }

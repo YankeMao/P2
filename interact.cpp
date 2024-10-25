@@ -91,17 +91,16 @@ void compute_density(sim_state_t* s, sim_param_t* params)
                             // Compute distance squared
                             float r2 = vec3_dist2(pi->x, pj->x);
                             float z  = h2 - r2;
+                            if(pj > pi){
                             if (z > 0) {
                                 float rho_ij = C * z * z * z;
                                 // To avoid race conditions, use atomic updates
                                 #pragma omp atomic
                                 pi->rho += rho_ij;
-                                
                                 // Ensure that each pair is only counted once
-                                if (pj != pi) {
-                                    #pragma omp atomic
-                                    pj->rho += rho_ij;
-                                }
+                                #pragma omp atomic
+                                pj->rho += rho_ij;
+                            }
                             }
                             pj = pj->next;
                         }
